@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 
+// TODO: 考虑扩展到存储 Set 用来放 ExpandedDirs
 export const useLocalStorage = <T>(
   key: string,
   initialValue: T,

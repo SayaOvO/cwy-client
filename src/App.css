@@ -110,6 +110,10 @@ ul {
   &:hover {
     background-color: #ddd;
   }
+  &.active {
+    font-weight: 600;
+    background-color: #ddd; /* 颜色要比上面的更深点 */
+  }
 }
 
 .create-file-wrapper {
@@ -134,6 +138,8 @@ ul {
 /* tab */
 .tabs {
   display: flex;
+  /* TODO: 需要处理 overflow */
+  flex-shrink: 0;
 
   & > li[aria-selected="true"] > .tab {
     border-bottom: 0;
@@ -179,4 +185,13 @@ ul {
   flex: 1;
   border: 1px solid #ccc;
   border-left: 0;
+}
+
+.file-bar {
+  padding: 8px 12px;
+  letter-spacing: 1.03px;
+  border-bottom: 1px solid #ccc;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }

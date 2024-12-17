@@ -1,4 +1,6 @@
 import { X } from 'lucide-react';
+import { useCallback } from 'react';
+import { useToggleDirs } from '../contexts/expanded-dirs-context';
 import {
   useActiveTab,
   useCloseTab,
@@ -16,6 +18,12 @@ export const TabBar = () => {
   const activeTab = useActiveTab();
   const setActiveTab = useSetActiveTab();
   const closeTab = useCloseTab();
+  const { toggleDirs } = useToggleDirs();
+
+  const handleClick = useCallback((id: string) => {
+    setActiveTab(id);
+    // toggleDirs(id);
+  }, []);
 
   return (
     <nav className='nav-tabs'>
@@ -27,7 +35,7 @@ export const TabBar = () => {
             aria-selected={activeTab === tab.id}
             aria-controls={`panel-${tab.id}`}
           >
-            <button onClick={() => setActiveTab(tab.id)} className='tab'>
+            <button onClick={() => handleClick(tab.id)} className='tab'>
               {tab.fileName}
               <span className='x-container' onClick={() => closeTab(tab.id)}>
                 <X width={12} height={12} />

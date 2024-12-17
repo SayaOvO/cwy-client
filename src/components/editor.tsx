@@ -1,5 +1,7 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { useParams } from 'wouter';
+import { ExpandedDirsProvider } from '../contexts/expanded-dirs-context';
+import { TabContextProvider } from '../contexts/tab-context';
 import { useFiles } from '../hooks/useFiles';
 import { FileExplore } from './file-explore';
 import { SideBar } from './sidebar';
@@ -52,10 +54,17 @@ export const Editor = ({
         gridTemplateColumns: `${sidebarWidth}px 1fr`,
       }}
     >
-      <SideBar projectId={projectId} onResizeMouseDown={handleResizeMouseDown}>
-        {fileExplore}
-      </SideBar>
-      {children}
+      <ExpandedDirsProvider files={files}>
+        <TabContextProvider>
+          <SideBar
+            projectId={projectId}
+            onResizeMouseDown={handleResizeMouseDown}
+          >
+            {fileExplore}
+          </SideBar>
+          {children}
+        </TabContextProvider>
+      </ExpandedDirsProvider>
     </div>
   );
 };

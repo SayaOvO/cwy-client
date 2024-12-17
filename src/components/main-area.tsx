@@ -1,3 +1,4 @@
+import { FileBar } from './file-bar';
 import { TabBar } from './tab-bar';
 
 let render = 0;
@@ -9,6 +10,7 @@ export const MainArea = () => {
   return (
     <main>
       <TabBar />
+      <FileBar />
     </main>
   );
 };

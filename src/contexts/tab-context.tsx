@@ -5,10 +5,12 @@ import {
   SetStateAction,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
 } from 'react';
 import { useLocalStorage } from '../hooks/use-localstorage';
 import { type Tab } from '../types/tab';
+import { useToggleDirs } from './expanded-dirs-context';
 
 const TabContext = createContext<{
   tabs: Tab[];
@@ -20,10 +22,6 @@ const TabContext = createContext<{
   activeTab: '',
 });
 
-/* 分离出这两个 Action Context，目的是为了减少无关的重渲染，具体来讲是
-在 FileExplore 中的 openFile 函数中有用这两个值，如果不提取出来的话，activeTab 的改变
-也会导致 FileExplore 的重渲染，虽然影响不大，我仍不想这样无关的渲染产生
- */
 const SetActiveTabContext = createContext<Dispatch<SetStateAction<string>>>(
   () => {},
 );
@@ -41,6 +39,7 @@ export const TabContextProvider = ({
     'activeTab',
     tabs.length > 0 ? tabs[0].id : '',
   );
+  const { toggleDirs } = useToggleDirs();
 
   console.log('tabs', tabs);
   console.log('active Tab', activeTab);
@@ -73,6 +72,12 @@ export const TabContextProvider = ({
     closeTab,
     activeTab,
   }), [tabs, closeTab, activeTab]);
+
+  useEffect(() => {
+    if (activeTab) {
+      toggleDirs(activeTab);
+    }
+  }, [activeTab, toggleDirs]);
 
   return (
     <SetActiveTabContext value={setActiveTab}>
