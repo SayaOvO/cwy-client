@@ -17,15 +17,24 @@ export const buildFileTree = (files: File[]): FileWithChildren => {
 
   files.forEach(file => {
     const fileWithChildren = fileMap.get(file.id);
+    const isDirectory = file.fileType === 'directory';
     if (file.parentId) {
       const parent = fileMap.get(file.parentId);
       if (parent) {
-        parent.children.push(fileWithChildren);
+        if (isDirectory) {
+          parent.children.unshift(fileWithChildren);
+        } else {
+          parent.children.push(fileWithChildren);
+        }
       }
     } else {
       const root = fileMap.get(rootFile.id);
       if (file.id !== root.id) {
-        root.children.push(fileWithChildren);
+        if (isDirectory) {
+          root.children.unshift(fileWithChildren);
+        } else {
+          root.children.push(fileWithChildren);
+        }
       }
     }
   });

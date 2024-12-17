@@ -1,9 +1,16 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { useParams } from 'wouter';
+import { useFiles } from '../hooks/useFiles';
+import { FileExplore } from './file-explore';
 import { SideBar } from './sidebar';
 
-export const Editor = () => {
+export const Editor = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
   const { name } = useParams<{ name: string }>();
+  const { files, isLoading } = useFiles(name);
   const isResizing = useRef<boolean>(false);
   const [sidebarWidth, setSidebarWidth] = useState(250);
 
@@ -20,6 +27,10 @@ export const Editor = () => {
     },
     [],
   );
+
+  const fileExplore = useMemo(() => <FileExplore files={files || []} />, [
+    files,
+  ]);
   const handleResize = (e: MouseEvent) => {
     if (!isResizing.current) {
       return;
@@ -30,6 +41,10 @@ export const Editor = () => {
     document.body.style.cursor = 'w-resize';
   };
 
+  if (!files || isLoading) {
+    return <p>Loading...</p>;
+  }
+
   return (
     <div
       className='editor'
@@ -37,7 +52,10 @@ export const Editor = () => {
         gridTemplateColumns: `${sidebarWidth}px 1fr`,
       }}
     >
-      <SideBar projectName={name} onResizeMouseDown={handleResizeMouseDown} />
+      <SideBar projectName={name} onResizeMouseDown={handleResizeMouseDown}>
+        {fileExplore}
+      </SideBar>
+      {children}
     </div>
   );
 };

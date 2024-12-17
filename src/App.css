@@ -8,9 +8,19 @@
   margin: 0px;
 }
 
+ul {
+  list-style-type: none;
+}
+
 body {
   line-height: 1.5;
   min-height: 100vh;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
 }
 
 ul {
@@ -27,11 +37,16 @@ ul {
   display: grid;
 }
 
+/* sidebar */
 .sidebar {
   border: 1px solid #ccc;
   min-height: 100vh;
   position: relative;
-  padding: 12px;
+}
+
+.file-explore {
+  height: 100%;
+  padding: 6px;
 }
 
 .resize-handle {
@@ -51,6 +66,22 @@ ul {
   }
 }
 
+.sidebar-contextmenu {
+  position: fixed;
+  background-color: #ccc;
+  width: 160px;
+  border-radius: 8px;
+
+  & > li {
+    cursor: pointer;
+    padding: 5px;
+    font-size: 14px;
+  }
+  & > li + li {
+    border-top: 1px solid #ddd;
+  }
+}
+
 .file-item {
   display: flex;
   align-items: center;
@@ -60,4 +91,73 @@ ul {
   &:hover {
     background-color: #ddd;
   }
+}
+
+.create-file-wrapper {
+  padding-left: 26px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  outline: 2px solid #ccc;
+
+  & > div {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.create-file-input {
+  max-width: 80%;
+  border: none;
+  outline: none;
+}
+
+/* tab */
+.tabs {
+  display: flex;
+
+  & > li[aria-selected="true"] > .tab {
+    border-bottom: 0;
+    font-weight: 600;
+  }
+}
+
+.tab {
+  cursor: pointer;
+  background-color: transparent;
+  outline: none;
+  border: none;
+  padding: 8px 24px;
+  margin-left: -1px;
+  border: 1px solid #ccc;
+  position: relative;
+
+  & > .x-container {
+    top: 50%;
+    position: absolute;
+    opacity: 0;
+    transition: opacity 275ms ease;
+    transform: translateY(-50%);
+    right: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1px;
+    border-radius: 100%;
+  }
+  &:hover > .x-container {
+    opacity: 1;
+  }
+  .x-container:hover {
+    background-color: #ccc;
+  }
+}
+
+.nav-tabs {
+  display: flex;
+}
+.tabs-remaining {
+  flex: 1;
+  border: 1px solid #ccc;
+  border-left: 0;
 }
