@@ -2,12 +2,12 @@ import { FC, memo, ReactNode } from 'react';
 import { useFiles } from '../hooks/useFiles';
 let count = 0;
 export const SideBar: FC<{
-  projectName: string;
+  projectId: string;
   onResizeMouseDown: (e: React.MouseEvent<HTMLDivElement>) => void;
   children: ReactNode;
-}> = memo(({ projectName, onResizeMouseDown, children }) => {
+}> = memo(({ projectId, onResizeMouseDown, children }) => {
   console.log('side bar render', count++);
-  const { files } = useFiles(projectName);
+  const { files } = useFiles(projectId);
 
   if (!files) return null;
   return (

@@ -9,8 +9,8 @@ export const Editor = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const { name } = useParams<{ name: string }>();
-  const { files, isLoading } = useFiles(name);
+  const { id: projectId } = useParams<{ id: string }>();
+  const { files, isLoading } = useFiles(projectId);
   const isResizing = useRef<boolean>(false);
   const [sidebarWidth, setSidebarWidth] = useState(250);
 
@@ -52,7 +52,7 @@ export const Editor = ({
         gridTemplateColumns: `${sidebarWidth}px 1fr`,
       }}
     >
-      <SideBar projectName={name} onResizeMouseDown={handleResizeMouseDown}>
+      <SideBar projectId={projectId} onResizeMouseDown={handleResizeMouseDown}>
         {fileExplore}
       </SideBar>
       {children}

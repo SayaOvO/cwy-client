@@ -18,13 +18,13 @@ export const FileExplore: FC<{ files: File[] }> = ({
     () => new Set<string>([root.id]),
   );
   console.log('file explore render:', render++);
-  const { name: projectName } = useParams<{ name: string }>();
-  const { createFile } = useFiles(projectName);
+  console.log('root:', root);
+  const { id: projectId } = useParams<{ id: string }>();
+  const { createFile } = useFiles(projectId);
   const setTabs = useSetTabs();
   const setActiveTab = useSetActiveTab();
   const pathRef = useRef<string>('');
-  const parentIdRef = useRef<string>('');
-  const [path, setPath] = useState('');
+  const parentIdRef = useRef<string>(root.id);
 
   const openFile = useCallback((file: File) => {
     setTabs(
@@ -66,9 +66,16 @@ export const FileExplore: FC<{ files: File[] }> = ({
       y: e.clientY,
     });
   };
+
+  const resetRef = useCallback(() => {
+    parentIdRef.current = root.id;
+    pathRef.current = '';
+  }, [root]);
+
   const handleCloseMenu = useCallback(() => {
     setOpenMenu(false);
-  }, []);
+    resetRef();
+  }, [resetRef]);
 
   const handleOpenInput = useCallback((fileType: FileType) => {
     setOpenInput(true);
@@ -78,26 +85,54 @@ export const FileExplore: FC<{ files: File[] }> = ({
 
   const handleCloseInput = useCallback(() => {
     setOpenInput(false);
-  }, []);
+    resetRef();
+  }, [resetRef]);
 
   const handleCreateFile = useCallback(async (fileName: string) => {
     createFile({
       name: fileName,
-      projectName,
+      projectId,
       path: pathRef.current + fileName,
-      parentId: null,
+      parentId: parentIdRef.current,
       fileType: createFileType,
     });
     setOpenInput(false);
-  }, [projectName, createFileType, pathRef.current]);
+    resetRef();
+  }, [projectId, createFileType, pathRef.current, resetRef]);
 
   const handleCollapseAll = useCallback(() => {
     setExpandedDirs(new Set([root.id]));
     setOpenMenu(false);
   }, []);
 
+  // 逻辑上正确性暂时没发现问题，暂时不动
+  const handleFileContextMenu = useCallback((node: File) => {
+    // update parentId
+    if (node.id === root.id) {
+      parentIdRef.current = root.id;
+    } else {
+      if (node.fileType === 'directory') {
+        parentIdRef.current = node.id;
+      } else {
+        parentIdRef.current = node.parentId!; // only root file's parentId will be null
+      }
+    }
+    if (node.fileType === 'directory') {
+      if (node.id !== root.id) {
+        pathRef.current = node.path + '/';
+      }
+    } else {
+      const seg = node.path.split('/');
+      if (seg.length > 1) {
+        seg.pop();
+        pathRef.current = seg.join('/');
+      } else {
+        pathRef.current = '';
+      }
+    }
+  }, [root]);
   const renderNode = (node: FileWithChildren, level: number) => {
-    const padding = level * 20;
+    const padding = level * 12;
     return (
       <div
         key={node.id}
@@ -105,21 +140,7 @@ export const FileExplore: FC<{ files: File[] }> = ({
       >
         <div
           className='file-item br-1'
-          onContextMenu={() => {
-            if (node.fileType === 'directory') {
-              pathRef.current = node.path + '/';
-            } else {
-              const seg = node.path.split('/');
-              console.log('seg', seg);
-              if (seg.length > 1) {
-                seg.pop();
-                pathRef.current = seg.join('/');
-              } else {
-                pathRef.current = '';
-              }
-            }
-            console.log('path', pathRef.current);
-          }}
+          onContextMenu={() => handleFileContextMenu(node)}
           onClick={() => {
             node.fileType === 'directory'
               ? toggleDirs(node.id)

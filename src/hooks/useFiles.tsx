@@ -8,9 +8,9 @@ const fetcher = async (url: string) => {
 };
 
 const API_URL = import.meta.env.PUBLIC_API_URL;
-export const useFiles = (projectName: string) => {
+export const useFiles = (projectId: string) => {
   const { data, error, isLoading, mutate } = useSWR<File[]>(
-    `${API_URL}/projects/${projectName}`,
+    `${API_URL}/projects/${projectId}`,
     fetcher,
   );
 
@@ -19,8 +19,16 @@ export const useFiles = (projectName: string) => {
     path: string;
     parentId: string | null;
     fileType: 'directory' | 'regular';
-    projectName: string;
+    projectId: string;
   }) => {
+    // console.log(
+    //   'name:path:parentId:fileType',
+    //   file.name,
+    //   file.path,
+    //   file.parentId,
+    //   file.fileType,
+    // );
+    // return;
     try {
       const response = await fetch(`${API_URL}/files`, {
         method: 'POST',
@@ -31,9 +39,7 @@ export const useFiles = (projectName: string) => {
           file,
         ),
       });
-      console.log('response', response);
       const createdFile = await response.json();
-      console.log('createdFile', createdFile);
       mutate((currentData) => {
         return currentData ? [...currentData, createdFile] : [createdFile];
       }, { revalidate: false });

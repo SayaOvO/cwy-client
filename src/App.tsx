@@ -10,7 +10,7 @@ const App = () => {
     <ErrorBoundary fallback={<p>Something went wrong! try to refresh :)</p>}>
       <Switch>
         <TabContextProvider>
-          <Route path='projects/:name' component={Project} />
+          <Route path='projects/:id' component={Project} />
         </TabContextProvider>
       </Switch>
     </ErrorBoundary>
