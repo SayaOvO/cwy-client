@@ -4,7 +4,7 @@ import { useParams } from 'wouter';
 import { useSetActiveTab, useSetTabs } from '../contexts/tab-context';
 import { useFiles } from '../hooks/useFiles';
 import { type File } from '../types/file';
-import { FileType } from '../types/file-type';
+import { type FileType } from '../types/file-type';
 import { buildFileTree, FileWithChildren } from '../utils/build-file-tree';
 import { CreateFile } from './create-file-input';
 import { SidebarContextMenu } from './sidebar-contextmenu';
@@ -131,12 +131,11 @@ export const FileExplore: FC<{ files: File[] }> = ({
       }
     }
   }, [root]);
-  const renderNode = (node: FileWithChildren, level: number) => {
-    const padding = level * 12;
+  const renderNode = (node: FileWithChildren) => {
     return (
       <div
         key={node.id}
-        style={{ paddingLeft: `${padding}px` }}
+        className='folder'
       >
         <div
           className='file-item br-1'
@@ -155,14 +154,15 @@ export const FileExplore: FC<{ files: File[] }> = ({
           {node.name}
         </div>
         {node.fileType === 'directory' && expandedDirs.has(node.id)
-          && node.children.map(child => renderNode(child, level + 1))}
+          && node.children.map(child => renderNode(child))}
+        <div className='fold-indicator' />
       </div>
     );
   };
   return (
     <div className='file-explore' onContextMenu={handleOpenMenu}>
-      <div>
-        {renderNode(root, 0)}
+      <>
+        {renderNode(root)}
         {openInput
           && (
             <CreateFile
@@ -171,7 +171,7 @@ export const FileExplore: FC<{ files: File[] }> = ({
               onCloseInput={handleCloseInput}
             />
           )}
-      </div>
+      </>
       {openMenu && (
         <SidebarContextMenu
           pos={pos}
