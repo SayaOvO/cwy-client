@@ -1,19 +1,15 @@
-import { File as FileIcon, FolderClosed, FolderOpen } from 'lucide-react';
 import { FC, useCallback, useMemo, useRef, useState } from 'react';
 import { useParams } from 'wouter';
 import {
   useExpandedDirs,
   useToggleDirs,
 } from '../contexts/expanded-dirs-context';
-import { useSetActiveTab, useSetTabs } from '../contexts/tab-context';
 import { useFiles } from '../hooks/useFiles';
 import { type File } from '../types/file';
 import { type FileType } from '../types/file-type';
 import { buildFileTree, FileWithChildren } from '../utils/build-file-tree';
 import { CreateFile } from './create-file-input';
 import { FileExploreItem } from './file-explore-item';
-import { FileName } from './file=name';
-import { La } from './la';
 import { SidebarContextMenu } from './sidebar-contextmenu';
 
 let render = 0;
@@ -21,42 +17,13 @@ export const FileExplore: FC<{ files: File[] }> = ({
   files,
 }) => {
   const root: FileWithChildren = useMemo(() => buildFileTree(files), [files]);
-  // const [expandedDirs, setExpandedDirs] = useState<Set<string>>(
-  //   () => new Set<string>([root.id]),
-  // );
   const expandedDirs = useExpandedDirs();
   const { toggleDirs, collapseAll } = useToggleDirs();
   console.log('file explore render:', render++);
   const { id: projectId } = useParams<{ id: string }>();
   const { createFile } = useFiles(projectId);
-  // const setTabs = useSetTabs();
-  // const setActiveTab = useSetActiveTab();
   const pathRef = useRef<string>('');
   const parentIdRef = useRef<string>(root.id);
-
-  // const openFile = useCallback((file: File) => {
-  //   setTabs(
-  //     currentTabs => {
-  //       if (currentTabs.find(tab => tab.id === file.id)) {
-  //         return currentTabs;
-  //       }
-  //       return [...currentTabs, { id: file.id, fileName: file.name }];
-  //     },
-  //   );
-  //   setActiveTab(file.id);
-  // }, []);
-
-  // const toggleDirs = useCallback((dirId: string) => {
-  //   setExpandedDirs((prev) => {
-  //     const next = new Set(prev);
-  //     if (next.has(dirId)) {
-  //       next.delete(dirId);
-  //     } else {
-  //       next.add(dirId);
-  //     }
-  //     return next;
-  //   });
-  // }, []);
 
   const [openMenu, setOpenMenu] = useState(false);
   const [pos, setPos] = useState({ x: 0, y: 0 });
@@ -139,38 +106,9 @@ export const FileExplore: FC<{ files: File[] }> = ({
       }
     }
   }, [root]);
-  // const renderNode = (node: FileWithChildren) => {
-  //   return (
-  //     <div
-  //       key={node.id}
-  //       className='folder'
-  //     >
-  //       <div
-  //         className='file-item br-1'
-  //         onContextMenu={() => handleFileContextMenu(node)}
-  //         onClick={() => {
-  //           node.fileType === 'directory'
-  //             ? toggleDirs(node.id)
-  //             : openFile(node);
-  //         }}
-  //       >
-  //         {node.fileType === 'directory'
-  //           ? expandedDirs.has(node.id)
-  //             ? <FolderOpen width={18} height={18} />
-  //             : <FolderClosed width={18} height={18} />
-  //           : <FileIcon width={18} height={18} />}
-  //         <FileName name={node.name} id={node.id} />
-  //       </div>
-  //       {node.fileType === 'directory' && expandedDirs.has(node.id)
-  //         && node.children.map(child => renderNode(child))}
-  //       <div className='fold-indicator' />
-  //     </div>
-  //   );
-  // };
   return (
     <div className='file-explore' onContextMenu={handleOpenMenu}>
       <>
-        {/*renderNode(root) */}
         {
           <FileExploreItem
             node={root}

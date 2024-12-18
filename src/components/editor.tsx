@@ -54,17 +54,13 @@ export const Editor = ({
         gridTemplateColumns: `${sidebarWidth}px 1fr`,
       }}
     >
-      <ExpandedDirsProvider files={files}>
-        <TabContextProvider>
-          <SideBar
-            projectId={projectId}
-            onResizeMouseDown={handleResizeMouseDown}
-          >
-            {fileExplore}
-          </SideBar>
-          {children}
-        </TabContextProvider>
-      </ExpandedDirsProvider>
+      <SideBar
+        projectId={projectId}
+        onResizeMouseDown={handleResizeMouseDown}
+      >
+        {fileExplore}
+      </SideBar>
+      {children}
     </div>
   );
 };

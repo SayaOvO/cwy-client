@@ -1,3 +1,4 @@
+import { EditorCore } from './editor-core';
 import { FileBar } from './file-bar';
 import { TabBar } from './tab-bar';
 
@@ -11,6 +12,7 @@ export const MainArea = () => {
     <main>
       <TabBar />
       <FileBar />
+      <EditorCore />
     </main>
   );
 };

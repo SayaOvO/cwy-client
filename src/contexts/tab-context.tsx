@@ -22,6 +22,8 @@ const TabContext = createContext<{
   activeTab: '',
 });
 
+// 这里拆分是因为早期的过度优化，那时认为 FileExplore 组件不需要 activeTab 这个值，所以认为点击 tab
+// 会导致 FileExplore 组件无意义重渲染，后面发现 FileExplore 有需要这个值，但是拆开也无所谓，不想再改回去了
 const SetActiveTabContext = createContext<Dispatch<SetStateAction<string>>>(
   () => {},
 );

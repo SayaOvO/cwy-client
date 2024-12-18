@@ -1,3 +1,14 @@
+:root {
+  --ff-sans: -apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Roboto,
+    PingFang SC, Hiragino Sans GB, Source Han Sans SC, Noto Sans CJK SC,
+    Noto Sans SC, WenQuanYi Micro Hei, WenQuanYi Zen Hei, Helvetica Neue,
+    Microsoft YaHei, Helvetica, Arial, sans-serif, Apple Color Emoji,
+    Segoe UI Emoji, Segoe UI Symbol;
+  --ff-mono: ui-monospace, Menlo, Monaco, "Cascadia Mono", "Segoe UI Mono",
+    "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro",
+    "Fira Mono", "Droid Sans Mono", "Courier New", monospace;
+}
+
 *,
 *::before,
 *::after {
@@ -188,10 +199,48 @@ ul {
 }
 
 .file-bar {
-  padding: 8px 12px;
-  letter-spacing: 1.03px;
   border-bottom: 1px solid #ccc;
+  padding: 8px 12px;
+
+  & > input {
+    display: block;
+    margin-top: 8px;
+    width: 64%;
+    border-radius: 8px;
+    padding: 4px 6px;
+    outline: none;
+    border: 1px solid #ccc;
+  }
+}
+
+.file-bar-header {
+  letter-spacing: 1.03px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  & > svg {
+    cursor: pointer;
+  }
+  &.search {
+    & > svg {
+      color: blue;
+    }
+  }
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.cm-container {
+  flex: 1;
+  overflow-y: scroll;
+}
+
+.cm-editor .cm-scroller {
+  font-family: var(--ff-mono);
+  font-size: 14px;
 }
