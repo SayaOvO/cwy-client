@@ -7,6 +7,7 @@ import { yCollab, yUndoManagerKeymap } from "y-codemirror.next";
 import { IndexeddbPersistence } from "y-indexeddb";
 import { WebsocketProvider } from "y-websocket";
 import * as Y from "yjs";
+import { ExtensionsManager } from "./extensions-manager";
 
 export class EditorManager {
   private doc: Y.Doc;
@@ -57,45 +58,41 @@ export class EditorManager {
 
   async getOrCreateEditorView(
     fileId: string,
+    fileName: string,
     container: HTMLDivElement,
     additionalExtensions: Extension[] = [],
   ): Promise<EditorView> {
     await this.waitForSync();
     const yText = this.getOrCreateFileText(fileId);
     console.log("getOrcreateeditorview, yText:", yText.toString());
+    const extensions = await ExtensionsManager.getExtensions(
+      fileName,
+      yText,
+      this.wsProvider.awareness,
+      additionalExtensions,
+    );
     if (this.editorViews.has(fileId)) {
       // 有就复用，并且更新内容与对应的 Y.Text 一致
       const view = this.editorViews.get(fileId)!;
-      const transaction = view.state.update({
-        changes: {
-          from: 0,
-          to: view.state.doc.length,
-          insert: yText.toString(),
-        },
-      });
-      view.dispatch(transaction);
-      // ??????????/
+      // const newState = EditorState.create({
+      //   doc: yText.toString(),
+      //   extensions
+      // })
+      // view.setState(newState)
+      // const transaction = view.state.update({
+      //   changes: {
+      //     from: 0,
+      //     to: view.state.doc.length,
+      //     insert: yText.toString(),
+      //   },
+      // });
+      // view.dispatch(transaction);
       if (view.dom.parentElement !== container) {
         container.appendChild(view.dom);
       }
       return view;
     }
     // 没有就创建新的 EditorView
-    const extensions = [
-      basicSetup,
-      yCollab(yText, this.wsProvider.awareness),
-      keymap.of([
-        ...yUndoManagerKeymap,
-        {
-          key: "Ctrl-j",
-          run: expandAbbreviation,
-        },
-      ]),
-      EditorView.theme({
-        "&": { height: "100%" },
-      }),
-      ...additionalExtensions,
-    ];
 
     const editorView = new EditorView({
       state: EditorState.create({
@@ -112,6 +109,7 @@ export class EditorManager {
   // 切换活跃文件
   async switchActiveFile(
     fileId: string,
+    fileName: string,
     container: HTMLDivElement,
     extensions: Extension[],
   ): Promise<EditorView> {
@@ -123,6 +121,7 @@ export class EditorManager {
     // 获取或创建新的编辑器视图
     const newEditorView = await this.getOrCreateEditorView(
       fileId,
+      fileName,
       container,
       extensions,
     );

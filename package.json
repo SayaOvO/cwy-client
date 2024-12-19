@@ -10,7 +10,11 @@
   },
   "dependencies": {
     "@codemirror/commands": "^6.7.1",
+    "@codemirror/lang-css": "^6.3.1",
+    "@codemirror/lang-html": "^6.4.9",
     "@codemirror/lang-javascript": "^6.2.2",
+    "@codemirror/lang-json": "^6.0.1",
+    "@codemirror/lang-markdown": "^6.3.1",
     "@codemirror/state": "^6.5.0",
     "@codemirror/view": "^6.36.0",
     "@emmetio/codemirror6-plugin": "^0.4.0",

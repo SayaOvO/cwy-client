@@ -2,7 +2,7 @@
 
 ** 功能
 
-*** TODO 整合 yjs 进行在线协作
+*** DONE 整合 yjs 进行在线协作
 *** TODO 创建和使用不同的项目
 *** TODO 高亮、补全（支持 emmet），lint 以及格式化（目前支持 JavaScript，TypeScript， HTML， CSS，Markdown）
 *** TODO 导出 unzip
