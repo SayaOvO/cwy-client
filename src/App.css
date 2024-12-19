@@ -238,9 +238,18 @@ main {
 .cm-container {
   flex: 1;
   overflow-y: scroll;
+  position: relative;
 }
 
 .cm-editor .cm-scroller {
   font-family: var(--ff-mono);
   font-size: 14px;
+}
+
+.status-line {
+  position: fixed;
+  bottom: 0px;
+  background-color: #ccc;
+  width: 100%;
+  padding-inline: 12px;
 }

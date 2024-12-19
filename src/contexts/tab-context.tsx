@@ -43,8 +43,8 @@ export const TabContextProvider = ({
   );
   const { toggleDirs } = useToggleDirs();
 
-  console.log('tabs', tabs);
-  console.log('active Tab', activeTab);
+  // console.log('tabs', tabs);
+  // console.log('active Tab', activeTab);
 
   const closeTab = useCallback((tabId: string) => {
     setTabs(currentTabs => {

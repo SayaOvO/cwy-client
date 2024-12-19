@@ -9,15 +9,16 @@ import {
 
 let render = 0;
 export const TabBar = () => {
-  console.log(
-    'tab bar render: ',
-    render++,
-  );
+  // console.log(
+  //   'tab bar render: ',
+  //   render++,
+  // );
   const tabs = useTabs();
   const activeTab = useActiveTab();
   const setActiveTab = useSetActiveTab();
   const closeTab = useCloseTab();
 
+  if (activeTab === '') return null;
   return (
     <nav className='nav-tabs'>
       <ul role='tablist' className='tabs'>

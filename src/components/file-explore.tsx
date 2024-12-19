@@ -19,7 +19,7 @@ export const FileExplore: FC<{ files: File[] }> = ({
   const root: FileWithChildren = useMemo(() => buildFileTree(files), [files]);
   const expandedDirs = useExpandedDirs();
   const { toggleDirs, collapseAll } = useToggleDirs();
-  console.log('file explore render:', render++);
+  // console.log('file explore render:', render++);
   const { id: projectId } = useParams<{ id: string }>();
   const { createFile } = useFiles(projectId);
   const pathRef = useRef<string>('');

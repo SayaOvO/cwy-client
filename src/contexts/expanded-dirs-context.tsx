@@ -44,7 +44,6 @@ export const ExpandedDirsProvider = ({
         }
         let parent = files.find(x => x.id === file.parentId);
         while (parent) {
-          console.log('parent', parent?.name);
           if (!next.has(parent.id) && parent.fileType === 'directory') {
             next.add(parent.id);
           }
