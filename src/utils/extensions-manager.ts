@@ -1,45 +1,46 @@
-import { Extension } from "@codemirror/state";
-import { indentWithTab } from "@codemirror/commands";
-import { emmetConfig, EmmetKnownSyntax } from "@emmetio/codemirror6-plugin";
-import type { Awareness } from "y-protocols/awareness.js";
-import { Text as YText } from "yjs";
+import { indentWithTab } from '@codemirror/commands';
+import { search } from '@codemirror/search';
+import { Extension } from '@codemirror/state';
+import { emmetConfig, EmmetKnownSyntax } from '@emmetio/codemirror6-plugin';
+import type { Awareness } from 'y-protocols/awareness.js';
+import { Text as YText } from 'yjs';
 
 export enum LanguageType {
-  JavaScript = "javascript",
-  TypeScript = "typescript",
-  JSX = "jsx",
-  TSX = "tsx",
-  CSS = "css",
-  HTML = "html",
-  JSON = "json",
-  Markdown = "markdown",
-  Plain = "plain",
+  JavaScript = 'javascript',
+  TypeScript = 'typescript',
+  JSX = 'jsx',
+  TSX = 'tsx',
+  CSS = 'css',
+  HTML = 'html',
+  JSON = 'json',
+  Markdown = 'markdown',
+  Plain = 'plain',
 }
 
 export class LanguageTypeManager {
   private static getFileExtension(fileName: string): string {
-    return fileName.split(".").at(-1) || "";
+    return fileName.split('.').at(-1) || '';
   }
 
   static getLanguageType(fileName: string): LanguageType {
     const ext = this.getFileExtension(fileName);
     switch (ext) {
-      case "js":
+      case 'js':
         return LanguageType.JavaScript;
-      case "jsx":
+      case 'jsx':
         return LanguageType.JSX;
-      case "ts":
+      case 'ts':
         return LanguageType.TypeScript;
-      case "tsx":
+      case 'tsx':
         return LanguageType.TSX;
-      case "css":
+      case 'css':
         return LanguageType.CSS;
-      case "html":
+      case 'html':
         return LanguageType.HTML;
-      case "json":
+      case 'json':
         return LanguageType.JSON;
-      case "md":
-      case "markdown":
+      case 'md':
+      case 'markdown':
         return LanguageType.Markdown;
       default:
         return LanguageType.Plain;
@@ -54,7 +55,7 @@ export class ExtensionsManager {
     switch (languageType) {
       case LanguageType.JavaScript:
       case LanguageType.TypeScript: {
-        const { javascript } = await import("@codemirror/lang-javascript");
+        const { javascript } = await import('@codemirror/lang-javascript');
         return [
           javascript({
             typescript: languageType === LanguageType.TypeScript,
@@ -63,7 +64,7 @@ export class ExtensionsManager {
       }
       case LanguageType.JSX:
       case LanguageType.TSX: {
-        const { javascript } = await import("@codemirror/lang-javascript");
+        const { javascript } = await import('@codemirror/lang-javascript');
         return [
           javascript({
             typescript: languageType === LanguageType.TSX,
@@ -76,7 +77,7 @@ export class ExtensionsManager {
       }
 
       case LanguageType.CSS: {
-        const { css } = await import("@codemirror/lang-css");
+        const { css } = await import('@codemirror/lang-css');
         return [
           css(),
           emmetConfig.of({
@@ -85,7 +86,7 @@ export class ExtensionsManager {
         ];
       }
       case LanguageType.HTML: {
-        const { html } = await import("@codemirror/lang-html");
+        const { html } = await import('@codemirror/lang-html');
         return [
           html(),
           emmetConfig.of({
@@ -94,11 +95,11 @@ export class ExtensionsManager {
         ];
       }
       case LanguageType.JSON: {
-        const { json } = await import("@codemirror/lang-json");
+        const { json } = await import('@codemirror/lang-json');
         return [json()];
       }
       case LanguageType.Markdown: {
-        const { markdown } = await import("@codemirror/lang-markdown");
+        const { markdown } = await import('@codemirror/lang-markdown');
         return [markdown()];
       }
       default:
@@ -116,27 +117,34 @@ export class ExtensionsManager {
       { EditorView },
       { expandAbbreviation },
       { yUndoManagerKeymap },
+      { search },
     ] = await Promise.all([
-      import("codemirror"),
-      import("y-codemirror.next"),
-      import("@codemirror/view"),
-      import("@codemirror/view"),
-      import("@emmetio/codemirror6-plugin"),
-      import("y-codemirror.next"),
+      import('codemirror'),
+      import('y-codemirror.next'),
+      import('@codemirror/view'),
+      import('@codemirror/view'),
+      import('@emmetio/codemirror6-plugin'),
+      import('y-codemirror.next'),
+      import('@codemirror/search'),
     ]);
     return [
       basicSetup,
       yCollab(yText, awareness),
+      search({
+        createPanel: (view) => ({
+          dom: document.createElement('div'),
+        }),
+      }),
       keymap.of([
         indentWithTab,
         ...yUndoManagerKeymap,
         {
-          key: "Ctrl-j",
+          key: 'Ctrl-j',
           run: expandAbbreviation,
         },
       ]),
       EditorView.theme({
-        "&": { height: "100%" },
+        '&': { height: '100%' },
       }),
     ];
   }

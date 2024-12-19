@@ -1,13 +1,10 @@
-import { Extension } from "@codemirror/state";
-import { EditorState } from "@codemirror/state";
-import { EditorView, keymap } from "@codemirror/view";
-import { expandAbbreviation } from "@emmetio/codemirror6-plugin";
-import { basicSetup } from "codemirror";
-import { yCollab, yUndoManagerKeymap } from "y-codemirror.next";
-import { IndexeddbPersistence } from "y-indexeddb";
-import { WebsocketProvider } from "y-websocket";
-import * as Y from "yjs";
-import { ExtensionsManager } from "./extensions-manager";
+import { Extension } from '@codemirror/state';
+import { EditorState } from '@codemirror/state';
+import { EditorView, keymap } from '@codemirror/view';
+import { IndexeddbPersistence } from 'y-indexeddb';
+import { WebsocketProvider } from 'y-websocket';
+import * as Y from 'yjs';
+import { ExtensionsManager } from './extensions-manager';
 
 export class EditorManager {
   private doc: Y.Doc;
@@ -17,9 +14,9 @@ export class EditorManager {
   private activeEditorView: EditorView | null = null;
   public editorViews: Map<string, EditorView> = new Map();
 
-  constructor(projectId: string, wsUrl: string = "ws://localhost:3001") {
+  constructor(projectId: string, wsUrl: string = 'ws://localhost:3001') {
     this.doc = new Y.Doc();
-    this.filesMap = this.doc.getMap("files");
+    this.filesMap = this.doc.getMap('files');
     this.wsProvider = new WebsocketProvider(wsUrl, projectId, this.doc);
 
     this.persistence = new IndexeddbPersistence(projectId, this.doc);
@@ -27,11 +24,11 @@ export class EditorManager {
   }
 
   private setupEventListeners() {
-    this.wsProvider.on("status", (event: { status: string }) => {
-      console.log("Sync Status:", event.status);
+    this.wsProvider.on('status', (event: { status: string }) => {
+      console.log('Sync Status:', event.status);
     });
-    this.persistence.on("synced", () => {
-      console.log("Indexed DB synced successfully");
+    this.persistence.on('synced', () => {
+      console.log('Indexed DB synced successfully');
     });
   }
 
@@ -40,18 +37,16 @@ export class EditorManager {
       if (this.persistence.synced) {
         resolve();
       } else {
-        this.persistence.once("synced", () => resolve());
+        this.persistence.once('synced', () => resolve());
       }
     });
   }
 
   getOrCreateFileText(fileId: string): Y.Text {
-    console.log("has:", this.filesMap.has(fileId));
     if (this.filesMap.has(fileId)) {
-      console.log("text:", this.filesMap.get(fileId)?.toString());
       return this.filesMap.get(fileId)!;
     }
-    const text = new Y.Text("");
+    const text = new Y.Text('');
     this.filesMap.set(fileId, text);
     return text;
   }
@@ -64,7 +59,6 @@ export class EditorManager {
   ): Promise<EditorView> {
     await this.waitForSync();
     const yText = this.getOrCreateFileText(fileId);
-    console.log("getOrcreateeditorview, yText:", yText.toString());
     const extensions = await ExtensionsManager.getExtensions(
       fileName,
       yText,
@@ -125,13 +119,6 @@ export class EditorManager {
       container,
       extensions,
     );
-    if (fileId === "f6e3fc74-503e-47f4-b278-873284b2ba27") {
-      const text = this.filesMap.get(fileId)!;
-      console.log("file text", text.toString());
-    }
-
-    console.log("new editor view", newEditorView);
-
     this.activeEditorView = newEditorView;
     return newEditorView;
   }
@@ -148,6 +135,11 @@ export class EditorManager {
       editorView.destroy();
       this.editorViews.delete(fileId);
     }
+  }
+
+  getCurrentView(fileId: string) {
+    const editorView = this.editorViews.get(fileId);
+    return editorView;
   }
 
   // 全局销毁

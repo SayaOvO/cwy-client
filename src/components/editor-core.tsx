@@ -1,21 +1,19 @@
-import { Extension } from '@codemirror/state';
 import { keymap } from '@codemirror/view';
 import { EditorView } from 'codemirror';
 import { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { useParams } from 'wouter';
+import { useEditorManager } from '../contexts/editor-manager';
 import { useActiveTab } from '../contexts/tab-context';
 import { ToggleSearchContext } from '../contexts/toggle-search';
 import { useActiveFile } from '../hooks/use-active-file';
 import { EditorManager } from '../utils/editor-manager';
 import { StatusLine } from './status-line';
 
-export const EditorCore = ({ mode }: { mode: Extension[] | null }) => {
-  console.log('mode: in core', mode);
+export const EditorCore = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const editorManagerRef = useRef<EditorManager | null>(null);
-  const { toggle } = useContext(ToggleSearchContext);
+  const { openSearch } = useContext(ToggleSearchContext);
   const [cursorPosition, setCursorPosition] = useState('0:0');
-  const { id: projectId } = useParams<{ id: string }>();
+  const editorManager = useEditorManager();
   const activeTab = useActiveTab();
   const activeFile = useActiveFile();
 
@@ -35,29 +33,20 @@ export const EditorCore = ({ mode }: { mode: Extension[] | null }) => {
       {
         key: 'Ctrl-s',
         run: () => {
-          toggle();
+          openSearch();
           return true;
         },
       },
     ]), []);
 
-  useEffect(() => {
-    if (!editorManagerRef.current) {
-      editorManagerRef.current = new EditorManager(projectId);
-    }
-    return () => {
-      editorManagerRef.current?.destroy();
-      editorManagerRef.current = null;
-    };
-  }, [projectId]);
-
+  console.log('manager', editorManager);
   useEffect(() => {
     (async () => {
       if (
-        containerRef.current && editorManagerRef.current && activeTab
+        containerRef.current && editorManager && activeTab
         && activeFile
       ) {
-        editorManagerRef.current.switchActiveFile(
+        const view = await editorManager.switchActiveFile(
           activeTab,
           activeFile.name,
           containerRef.current,
@@ -66,9 +55,10 @@ export const EditorCore = ({ mode }: { mode: Extension[] | null }) => {
             keymaps,
           ],
         );
+        view.focus();
       }
     })();
-  }, [activeTab, activeFile]);
+  }, [activeTab, activeFile, editorManager]);
 
   return (
     <>

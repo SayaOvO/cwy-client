@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import useSWR from 'swr';
+import { useSetActiveTab } from '../contexts/tab-context';
 import { type File } from '../types/file';
 
 const fetcher = async (url: string) => {
@@ -13,6 +14,7 @@ export const useFiles = (projectId: string) => {
     `${API_URL}/projects/${projectId}`,
     fetcher,
   );
+  const setActiveTab = useSetActiveTab();
 
   const createFile = useCallback(async (file: {
     name: string;
@@ -21,14 +23,6 @@ export const useFiles = (projectId: string) => {
     fileType: 'directory' | 'regular';
     projectId: string;
   }) => {
-    // console.log(
-    //   'name:path:parentId:fileType',
-    //   file.name,
-    //   file.path,
-    //   file.parentId,
-    //   file.fileType,
-    // );
-    // return;
     try {
       const response = await fetch(`${API_URL}/files`, {
         method: 'POST',
@@ -40,6 +34,7 @@ export const useFiles = (projectId: string) => {
         ),
       });
       const createdFile = await response.json();
+      setActiveTab(createdFile.id);
       mutate((currentData) => {
         return currentData ? [...currentData, createdFile] : [createdFile];
       }, { revalidate: false });

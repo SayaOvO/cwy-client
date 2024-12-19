@@ -1,10 +1,19 @@
-import { createContext, ReactNode, useMemo, useReducer } from 'react';
+import {
+  createContext,
+  ReactNode,
+  useCallback,
+  useMemo,
+  useReducer,
+  useState,
+} from 'react';
 
 export const ToggleSearchContext = createContext<{
-  toggle: () => void;
+  openSearch: () => void;
+  closeSearch: () => void;
   searchIsOpen: boolean;
 }>({
-  toggle: () => {},
+  closeSearch: () => {},
+  openSearch: () => {},
   searchIsOpen: false,
 });
 
@@ -13,12 +22,19 @@ export const ToggleSearchProvider = ({
 }: {
   children: ReactNode;
 }) => {
-  const [searchIsOpen, toggle] = useReducer(open => !open, false);
+  const [searchIsOpen, setSearchIsOpen] = useState(false);
 
+  const openSearch = useCallback(() => {
+    setSearchIsOpen(true);
+  }, []);
+  const closeSearch = useCallback(() => {
+    setSearchIsOpen(false);
+  }, []);
   const val = useMemo(() => ({
     searchIsOpen,
-    toggle,
-  }), [toggle, searchIsOpen]);
+    openSearch,
+    closeSearch,
+  }), [searchIsOpen, openSearch, closeSearch]);
   return (
     <ToggleSearchContext value={val}>
       {children}

@@ -3,10 +3,10 @@ import { useActiveFile } from '../hooks/use-active-file';
 
 import { Search } from 'lucide-react';
 import { ToggleSearchContext } from '../contexts/toggle-search';
-import { TabSearchInput } from './tab-search-input';
+import { TabSearchPanel } from './tab-search-panel';
 export const FileBar = () => {
   const file = useActiveFile();
-  const { toggle, searchIsOpen } = useContext(ToggleSearchContext);
+  const { openSearch, searchIsOpen } = useContext(ToggleSearchContext);
   if (!file) return null;
 
   console.log('search:', searchIsOpen);
@@ -14,9 +14,9 @@ export const FileBar = () => {
     <div className='file-bar'>
       <p className={`file-bar-header ${searchIsOpen ? 'search' : ''}`}>
         {file.path}
-        <Search width={18} height={18} onClick={toggle} />
+        <Search width={18} height={18} onClick={openSearch} />
       </p>
-      {searchIsOpen && <TabSearchInput />}
+      {searchIsOpen && <TabSearchPanel />}
     </div>
   );
 };

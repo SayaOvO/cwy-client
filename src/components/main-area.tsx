@@ -1,8 +1,9 @@
 import { Extension } from '@codemirror/state';
 import { useEffect, useState } from 'react';
+import { useParams } from 'wouter';
+import { EditorManagerProvider } from '../contexts/editor-manager';
 import { useActiveTab } from '../contexts/tab-context';
 import { useActiveFile } from '../hooks/use-active-file';
-import { getLanguageMode } from '../utils/import-language-mode';
 import { EditorCore } from './editor-core';
 import { FileBar } from './file-bar';
 import { TabBar } from './tab-bar';
@@ -13,35 +14,18 @@ export const MainArea = () => {
   //   'main area render: ',
   //   render++,
   // );
-  const activeFile = useActiveFile();
-  const [mode, setMode] = useState<Extension[] | null>(null);
-  useEffect(() => {
-    let ignore = false;
-    const loadMode = async () => {
-      try {
-        if (activeFile) {
-          const mode = await getLanguageMode(activeFile.name);
-          if (!ignore) {
-            setMode(mode);
-          }
-        }
-      } catch (error) {
-        console.error('Failed to load language mode', error);
-      }
-    };
-    loadMode();
-    return () => {
-      ignore = true;
-    };
-  }, [activeFile]);
+  const activeTab = useActiveTab();
+  const { id: projectId } = useParams<{ id: string }>();
 
-  if (!activeFile || !mode) return <p>No active tab</p>;
+  if (!activeTab) return <p>No active tab</p>;
 
   return (
     <main>
       <TabBar />
-      <FileBar />
-      <EditorCore mode={mode} />
+      <EditorManagerProvider projectId={projectId}>
+        <FileBar />
+        <EditorCore />
+      </EditorManagerProvider>
     </main>
   );
 };

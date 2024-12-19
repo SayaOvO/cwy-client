@@ -203,18 +203,52 @@ ul {
 .file-bar {
   border-bottom: 1px solid #ccc;
   padding: 8px 12px;
+}
 
-  & > input {
-    display: block;
-    margin-top: 8px;
-    width: 64%;
-    border-radius: 8px;
-    padding: 4px 6px;
-    outline: none;
-    border: 1px solid #ccc;
+.search-wrapper {
+  display: flex;
+  align-items: center;
+  margin-top: 8px;
+  gap: 12px;
+}
+
+.icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px;
+  cursor: pointer;
+  transition: background-color 275ms ease;
+  &:hover {
+    background-color: rgba(33, 33, 33, 0.3);
   }
 }
 
+.search-input-wrapper {
+  display: block;
+  border-radius: 8px;
+  padding: 4px 6px;
+  width: 60%;
+  border: 1px solid #ccc;
+  position: relative;
+
+  & > input {
+    width: 100%;
+    outline: none;
+    border: none;
+  }
+}
+.case-icon-wrapper {
+  position: absolute;
+  right: 2px;
+  top: 8px;
+
+  &.sensitive {
+    & > svg {
+      color: blue;
+    }
+  }
+}
 .file-bar-header {
   letter-spacing: 1.03px;
   display: flex;
