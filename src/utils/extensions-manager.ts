@@ -59,16 +59,29 @@ export class ExtensionsManager {
       case LanguageType.JavaScript:
       case LanguageType.TypeScript: {
         const { javascript } = await import('@codemirror/lang-javascript');
+        const { lintGutter } = await import('@codemirror/lint');
+        const { createLinter } = await import('./create-linter');
+        const linter = languageType === LanguageType.JavaScript
+          ? [createLinter({}), lintGutter()]
+          : [];
         return [
           javascript({
             typescript: languageType === LanguageType.TypeScript,
           }),
           formatService.createFormatExtension(LanguageType.JavaScript),
+          ...linter,
         ];
       }
       case LanguageType.JSX:
       case LanguageType.TSX: {
         const { javascript } = await import('@codemirror/lang-javascript');
+        const { createLinter } = await import('./create-linter');
+        const { lintGutter } = await import('@codemirror/lint');
+
+        const linter = languageType === LanguageType.JSX
+          ? [createLinter({ jsx: true }), lintGutter()]
+          : [];
+
         return [
           javascript({
             typescript: languageType === LanguageType.TSX,
@@ -78,6 +91,7 @@ export class ExtensionsManager {
             syntax: EmmetKnownSyntax.jsx,
           }),
           formatService.createFormatExtension(LanguageType.JavaScript),
+          ...linter,
         ];
       }
 

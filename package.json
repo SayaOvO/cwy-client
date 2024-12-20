@@ -15,12 +15,14 @@
     "@codemirror/lang-javascript": "^6.2.2",
     "@codemirror/lang-json": "^6.0.1",
     "@codemirror/lang-markdown": "^6.3.1",
+    "@codemirror/lint": "^6.8.4",
     "@codemirror/search": "^6.5.8",
     "@codemirror/state": "^6.5.0",
     "@codemirror/view": "^6.36.0",
     "@dprint/formatter": "^0.4.1",
     "@emmetio/codemirror6-plugin": "^0.4.0",
     "codemirror": "^6.0.1",
+    "eslint-linter-browserify": "^9.17.0",
     "lib0": "^0.2.99",
     "lucide-react": "^0.468.0",
     "react": "^19.0.0",
@@ -36,7 +38,7 @@
   },
   "devDependencies": {
     "@eslint/compat": "^1.2.0",
-    "@eslint/js": "^9.12.0",
+    "@eslint/js": "^9.17.0",
     "@rsbuild/core": "^1.1.8",
     "@rsbuild/plugin-react": "^1.0.7",
     "@types/react": "^19.0.0",
@@ -44,9 +46,9 @@
     "eslint": "^9.12.0",
     "eslint-plugin-react": "^7.37.1",
     "eslint-plugin-react-hooks": "^5.0.0",
-    "globals": "^15.11.0",
+    "globals": "^15.13.0",
     "typescript": "^5.7.2",
-    "typescript-eslint": "^8.8.1"
+    "typescript-eslint": "^8.18.0"
   },
   "packageManager": "pnpm@9.12.2+sha512.22721b3a11f81661ae1ec68ce1a7b879425a1ca5b991c975b074ac220b187ce56c708fe5db69f4c962c989452eee76c82877f4ee80f474cebd61ee13461b6228"
 }

@@ -26,6 +26,9 @@ importers:
       '@codemirror/lang-markdown':
         specifier: ^6.3.1
         version: 6.3.1
+      '@codemirror/lint':
+        specifier: ^6.8.4
+        version: 6.8.4
       '@codemirror/search':
         specifier: ^6.5.8
         version: 6.5.8
@@ -44,6 +47,9 @@ importers:
       codemirror:
         specifier: ^6.0.1
         version: 6.0.1
+      eslint-linter-browserify:
+        specifier: ^9.17.0
+        version: 9.17.0
       lib0:
         specifier: ^0.2.99
         version: 0.2.99
@@ -85,7 +91,7 @@ importers:
         specifier: ^1.2.0
         version: 1.2.4(eslint@9.17.0)
       '@eslint/js':
-        specifier: ^9.12.0
+        specifier: ^9.17.0
         version: 9.17.0
       '@rsbuild/core':
         specifier: ^1.1.8
@@ -109,13 +115,13 @@ importers:
         specifier: ^5.0.0
         version: 5.1.0(eslint@9.17.0)
       globals:
-        specifier: ^15.11.0
+        specifier: ^15.13.0
         version: 15.13.0
       typescript:
         specifier: ^5.7.2
         version: 5.7.2
       typescript-eslint:
-        specifier: ^8.8.1
+        specifier: ^8.18.0
         version: 8.18.0(eslint@9.17.0)(typescript@5.7.2)
 
 packages:
@@ -672,6 +678,9 @@ packages:
   escape-string-regexp@4.0.0:
     resolution: {integrity: sha512-TtpcNJ3XAzx3Gq8sWRzJaVajRs0uVxA2YAkdb1jm2YkPz4G6egUFAyA3n5vtEIZefPk5Wa4UXbKuS5fKkJWdgA==}
     engines: {node: '>=10'}
+
+  eslint-linter-browserify@9.17.0:
+    resolution: {integrity: sha512-1Kgu8RFS9pn8OQMwlGL0PWtqXOUU2KAwOHaHt/85NLz0NB/143o5bB3xfHhjG4NaE0tpwfUIxZRt3hH30++nRg==}
 
   eslint-plugin-react-hooks@5.1.0:
     resolution: {integrity: sha512-mpJRtPgHN2tNAvZ35AMfqeB3Xqeo273QxrHJsbBEPWODRM4r0yB6jfoROqKEYrOn27UtRPpcpHc2UqyBSuUNTw==}
@@ -2251,6 +2260,8 @@ snapshots:
       is-symbol: 1.1.1
 
   escape-string-regexp@4.0.0: {}
+
+  eslint-linter-browserify@9.17.0: {}
 
   eslint-plugin-react-hooks@5.1.0(eslint@9.17.0):
     dependencies:
