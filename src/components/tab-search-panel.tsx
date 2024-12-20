@@ -14,6 +14,7 @@ import {
   useReducer,
   useState,
 } from 'react';
+import { flushSync } from 'react-dom';
 import { useEditorManager } from '../contexts/editor-manager';
 import { useActiveTab } from '../contexts/tab-context';
 import { ToggleSearchContext } from '../contexts/toggle-search';
@@ -24,14 +25,13 @@ export const TabSearchPanel = () => {
   const editorManager = useEditorManager();
   const activeTab = useActiveTab();
   const [matchCount, setMatchCount] = useState(0);
-  const [caseSensitive, dispatch] = useReducer(state => !state, false);
+  const [caseSensitive, setCaseSensitive] = useState(false);
 
-  const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
-    const searchQuery = e.target.value;
-    setQuery(searchQuery);
+  const search = (query: string, caseSen: boolean) => {
+    console.log('case', caseSensitive);
     const newQuery = new SearchQuery({
-      search: searchQuery,
-      caseSensitive,
+      search: query,
+      caseSensitive: caseSen,
     });
     const view = editorManager?.getCurrentView(activeTab);
     if (view) {
@@ -48,6 +48,12 @@ export const TabSearchPanel = () => {
         effects: setSearchQuery.of(newQuery),
       });
     }
+  };
+
+  const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
+    const searchQuery = e.target.value;
+    setQuery(searchQuery);
+    search(searchQuery, caseSensitive);
   };
 
   useEffect(() => {
@@ -75,7 +81,10 @@ export const TabSearchPanel = () => {
     }
   }, []);
 
-  console.log('case', caseSensitive);
+  const searchWithCase = () => {
+    setCaseSensitive(c => !c);
+    search(query, !caseSensitive);
+  };
 
   return (
     <div className='search-wrapper'>
@@ -90,7 +99,7 @@ export const TabSearchPanel = () => {
             caseSensitive && 'sensitive'
           }`}
         >
-          <CaseSensitive width={16} height={16} onClick={dispatch} />
+          <CaseSensitive width={16} height={16} onClick={searchWithCase} />
         </div>
       </div>
       <div className='icon-wrapper'>

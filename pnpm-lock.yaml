@@ -35,12 +35,18 @@ importers:
       '@codemirror/view':
         specifier: ^6.36.0
         version: 6.36.0
+      '@dprint/formatter':
+        specifier: ^0.4.1
+        version: 0.4.1
       '@emmetio/codemirror6-plugin':
         specifier: ^0.4.0
         version: 0.4.0(@codemirror/autocomplete@6.18.4)(@codemirror/commands@6.7.1)(@codemirror/lang-css@6.3.1)(@codemirror/lang-html@6.4.9)(@codemirror/language@6.10.7)(@codemirror/state@6.5.0)(@codemirror/view@6.36.0)
       codemirror:
         specifier: ^6.0.1
         version: 6.0.1
+      lib0:
+        specifier: ^0.2.99
+        version: 0.2.99
       lucide-react:
         specifier: ^0.468.0
         version: 0.468.0(react@19.0.0)
@@ -153,6 +159,9 @@ packages:
 
   '@codemirror/view@6.36.0':
     resolution: {integrity: sha512-aMePDnkNNKE8dSOo1w689xYa3dijREbRajiRcgjSGc2TWN7MTdE+9pm5fxwdz0C4D9Di1VZomrn2M+xDe7tTVg==}
+
+  '@dprint/formatter@0.4.1':
+    resolution: {integrity: sha512-IB/GXdlMOvi0UhQQ9mcY15Fxcrc2JPadmo6tqefCNV0bptFq7YBpggzpqYXldBXDa04CbKJ+rDwO2eNRPE2+/g==}
 
   '@emmetio/abbreviation@2.3.3':
     resolution: {integrity: sha512-mgv58UrU3rh4YgbE/TzgLQwJ3pFsHHhCLqY20aJq+9comytTXUDNGG/SMtSeMJdkpxgXSXunBGLD8Boka3JyVA==}
@@ -1575,6 +1584,8 @@ snapshots:
       '@codemirror/state': 6.5.0
       style-mod: 4.1.2
       w3c-keyname: 2.2.8
+
+  '@dprint/formatter@0.4.1': {}
 
   '@emmetio/abbreviation@2.3.3':
     dependencies:

@@ -2,8 +2,10 @@ import { indentWithTab } from '@codemirror/commands';
 import { search } from '@codemirror/search';
 import { Extension } from '@codemirror/state';
 import { emmetConfig, EmmetKnownSyntax } from '@emmetio/codemirror6-plugin';
+import * as random from 'lib0/random';
 import type { Awareness } from 'y-protocols/awareness.js';
 import { Text as YText } from 'yjs';
+import { FormatService } from './format-service';
 
 export enum LanguageType {
   JavaScript = 'javascript',
@@ -52,6 +54,7 @@ export class ExtensionsManager {
   private static async getLanguageExtension(
     languageType: LanguageType,
   ): Promise<Extension[]> {
+    const formatService = new FormatService();
     switch (languageType) {
       case LanguageType.JavaScript:
       case LanguageType.TypeScript: {
@@ -60,6 +63,7 @@ export class ExtensionsManager {
           javascript({
             typescript: languageType === LanguageType.TypeScript,
           }),
+          formatService.createFormatExtension(LanguageType.JavaScript),
         ];
       }
       case LanguageType.JSX:
@@ -73,6 +77,7 @@ export class ExtensionsManager {
           emmetConfig.of({
             syntax: EmmetKnownSyntax.jsx,
           }),
+          formatService.createFormatExtension(LanguageType.JavaScript),
         ];
       }
 
@@ -96,11 +101,14 @@ export class ExtensionsManager {
       }
       case LanguageType.JSON: {
         const { json } = await import('@codemirror/lang-json');
-        return [json()];
+        return [json(), formatService.createFormatExtension(LanguageType.JSON)];
       }
       case LanguageType.Markdown: {
         const { markdown } = await import('@codemirror/lang-markdown');
-        return [markdown()];
+        return [
+          markdown(),
+          formatService.createFormatExtension(LanguageType.Markdown),
+        ];
       }
       default:
         return [];
@@ -110,6 +118,19 @@ export class ExtensionsManager {
     yText: YText,
     awareness: Awareness,
   ): Promise<Extension[]> {
+    const usercolors = [
+      { color: '#30bced', light: '#30bced33' },
+      { color: '#6eeb83', light: '#6eeb8333' },
+      { color: '#ffbc42', light: '#ffbc4233' },
+      { color: '#ecd444', light: '#ecd44433' },
+      { color: '#ee6352', light: '#ee635233' },
+      { color: '#9ac2c9', light: '#9ac2c933' },
+      { color: '#8acb88', light: '#8acb8833' },
+      { color: '#1be7ff', light: '#1be7ff33' },
+    ];
+
+    // select a random color for this user
+    const userColor = usercolors[random.uint32() % usercolors.length];
     const [
       { basicSetup },
       { yCollab },
@@ -127,6 +148,11 @@ export class ExtensionsManager {
       import('y-codemirror.next'),
       import('@codemirror/search'),
     ]);
+    awareness.setLocalStateField('user', {
+      name: 'Anonymous ' + Math.floor(Math.random() * 100),
+      color: userColor.color,
+      colorLight: userColor.light,
+    });
     return [
       basicSetup,
       yCollab(yText, awareness),
