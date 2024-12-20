@@ -24,7 +24,7 @@ export const useFiles = (projectId: string) => {
     projectId: string;
   }) => {
     try {
-      const response = await fetch(`${API_URL}/files`, {
+      const response = await fetch(`${API_URL}/api/files`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
