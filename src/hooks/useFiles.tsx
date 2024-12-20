@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback } from 'react';
 import useSWR from 'swr';
 import { useSetActiveTab } from '../contexts/tab-context';
 import { type File } from '../types/file';

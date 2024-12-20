@@ -3,7 +3,6 @@ import { keymap } from '@codemirror/view';
 import { EditorView } from '@codemirror/view';
 import { LanguageType } from './extensions-manager';
 
-// 简单的字符串相似度计算
 function similarity(a: string, b: string): number {
   let score = 0;
   const minLength = Math.min(a.length, b.length);
@@ -20,15 +19,13 @@ function findNewCursorPosition(
   newCode: string,
   oldPos: number,
 ): number {
-  // 获取光标前后的上下文
-  const contextLength = 20; // 可以调整这个值
+  const contextLength = 20;
   const oldBefore = oldCode.slice(Math.max(0, oldPos - contextLength), oldPos);
   const oldAfter = oldCode.slice(
     oldPos,
     Math.min(oldCode.length, oldPos + contextLength),
   );
 
-  // 在新代码中找到最匹配的位置
   let bestPos = 0;
   let bestScore = -1;
 
@@ -39,7 +36,6 @@ function findNewCursorPosition(
       Math.min(newCode.length, i + contextLength),
     );
 
-    // 计算相似度得分
     const beforeScore = similarity(oldBefore, newBefore);
     const afterScore = similarity(oldAfter, newAfter);
     const totalScore = beforeScore + afterScore;

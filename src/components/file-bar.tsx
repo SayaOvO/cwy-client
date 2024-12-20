@@ -6,15 +6,20 @@ import { ToggleSearchContext } from '../contexts/toggle-search';
 import { TabSearchPanel } from './tab-search-panel';
 export const FileBar = () => {
   const file = useActiveFile();
-  const { openSearch, searchIsOpen } = useContext(ToggleSearchContext);
+  const { openSearch, searchIsOpen, closeSearch } = useContext(
+    ToggleSearchContext,
+  );
   if (!file) return null;
 
-  console.log('search:', searchIsOpen);
   return (
     <div className='file-bar'>
       <p className={`file-bar-header ${searchIsOpen ? 'search' : ''}`}>
         {file.path}
-        <Search width={18} height={18} onClick={openSearch} />
+        <Search
+          width={18}
+          height={18}
+          onClick={searchIsOpen ? closeSearch : openSearch}
+        />
       </p>
       {searchIsOpen && <TabSearchPanel />}
     </div>

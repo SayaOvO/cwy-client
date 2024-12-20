@@ -7,6 +7,13 @@
   --ff-mono: ui-monospace, Menlo, Monaco, "Cascadia Mono", "Segoe UI Mono",
     "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro",
     "Fira Mono", "Droid Sans Mono", "Courier New", monospace;
+  --clr-primary: white;
+  --clr-secondary: #fefefe;
+  --clr-border: #ded9e0;
+  --clr-border-muted: rgba(209, 217, 224, 0.7);
+  --clr-text: #000;
+  --clr-text-muted: #59636e;
+  --clr-text-accent: #000;
 }
 
 *,
@@ -26,6 +33,8 @@ ul {
 body {
   line-height: 1.5;
   min-height: 100vh;
+  font-family: var(--ff-sans);
+  color: rgb(75, 96, 114);
 }
 
 button,
@@ -50,9 +59,11 @@ ul {
 
 /* sidebar */
 .sidebar {
-  border: 1px solid #ccc;
+  border: 1px solid var(--clr-border);
   min-height: 100vh;
   position: relative;
+  background-color: var(--clr-secondary);
+  /* color: var(--clr-text-muted); */
 }
 
 .file-explore {
@@ -65,7 +76,7 @@ ul {
   position: absolute;
   width: 5px;
   opacity: 0;
-  background-color: red;
+  background-color: var(--clr-border-muted);
   top: 0;
   bottom: 0;
   right: 0;
@@ -93,7 +104,7 @@ ul {
   bottom: 0;
   width: 2px;
   left: 12px;
-  background: #ccc;
+  background: var(--clr-border);
 }
 
 .sidebar-contextmenu {
@@ -109,7 +120,7 @@ ul {
     font-size: 14px;
   }
   & > li + li {
-    border-top: 1px solid #ddd;
+    border-top: 1px solid rgba(129, 139, 152, 0.45);
   }
 }
 
@@ -120,11 +131,11 @@ ul {
   cursor: pointer;
   padding: 4px 6px;
   &:hover {
-    background-color: #ddd;
+    background-color: rgba(129, 139, 152, 0.15);
   }
   &.active {
-    font-weight: 600;
-    background-color: #ddd; /* 颜色要比上面的更深点 */
+    font-weight: 500;
+    background-color: rgba(129, 139, 152, 0.25); /* 颜色要比上面的更深点 */
   }
 }
 
@@ -156,7 +167,10 @@ ul {
 
   & > li[aria-selected="true"] > .tab {
     border-bottom: 0;
-    font-weight: 600;
+    font-weight: 500;
+    & > .x-container {
+      opacity: 1;
+    }
   }
 }
 
@@ -167,7 +181,7 @@ ul {
   border: none;
   padding: 8px 24px;
   margin-left: -1px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--clr-border);
   position: relative;
 
   & > .x-container {
@@ -196,12 +210,12 @@ ul {
 }
 .tabs-remaining {
   flex: 1;
-  border: 1px solid #ccc;
+  border: 1px solid var(--clr-border);
   border-left: 0;
 }
 
 .file-bar {
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid var(--clr-border);
   padding: 8px 12px;
 }
 
@@ -229,7 +243,7 @@ ul {
   border-radius: 8px;
   padding: 4px 6px;
   width: 60%;
-  border: 1px solid #ccc;
+  border: 1px solid var(--clr-border);
   position: relative;
 
   & > input {
@@ -273,8 +287,8 @@ main {
 
 .cm-container {
   flex: 1;
-  overflow-y: scroll;
   position: relative;
+  overflow-y: hidden;
 }
 
 .cm-editor .cm-scroller {
@@ -283,9 +297,10 @@ main {
 }
 
 .status-line {
+  font-family: var(--ff-mono);
   position: fixed;
   bottom: 0px;
-  background-color: #ccc;
+  background-color: var(--clr-secondary);
   width: 100%;
   padding-inline: 12px;
 }

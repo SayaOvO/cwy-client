@@ -28,7 +28,6 @@ export const TabSearchPanel = () => {
   const [caseSensitive, setCaseSensitive] = useState(false);
 
   const search = (query: string, caseSen: boolean) => {
-    console.log('case', caseSensitive);
     const newQuery = new SearchQuery({
       search: query,
       caseSensitive: caseSen,

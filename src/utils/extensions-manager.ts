@@ -1,23 +1,11 @@
 import { indentWithTab } from '@codemirror/commands';
-import { search } from '@codemirror/search';
 import { Extension } from '@codemirror/state';
 import { emmetConfig, EmmetKnownSyntax } from '@emmetio/codemirror6-plugin';
 import * as random from 'lib0/random';
 import type { Awareness } from 'y-protocols/awareness.js';
 import { Text as YText } from 'yjs';
+import { LanguageType } from '../types/langauge-types';
 import { FormatService } from './format-service';
-
-export enum LanguageType {
-  JavaScript = 'javascript',
-  TypeScript = 'typescript',
-  JSX = 'jsx',
-  TSX = 'tsx',
-  CSS = 'css',
-  HTML = 'html',
-  JSON = 'json',
-  Markdown = 'markdown',
-  Plain = 'plain',
-}
 
 export class LanguageTypeManager {
   private static getFileExtension(fileName: string): string {

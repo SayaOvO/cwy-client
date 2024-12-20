@@ -23,6 +23,7 @@ export const MainArea = () => {
     <main>
       <TabBar />
       <EditorManagerProvider projectId={projectId}>
+        {/* 我认为把 FileBar 放进 EditorCode 更好，因为 searc panel 有些功能需要依赖 cm 中的状态 */}
         <FileBar />
         <EditorCore />
       </EditorManagerProvider>

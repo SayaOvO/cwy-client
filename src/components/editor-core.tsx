@@ -39,7 +39,6 @@ export const EditorCore = () => {
       },
     ]), []);
 
-  console.log('manager', editorManager);
   useEffect(() => {
     (async () => {
       if (

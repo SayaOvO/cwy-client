@@ -1,5 +1,5 @@
 import { createStreaming, GlobalConfiguration } from '@dprint/formatter';
-import { LanguageType } from './extensions-manager';
+import { LanguageType } from '../types/langauge-types';
 
 interface FormatRequest {
   code: string;
@@ -49,39 +49,28 @@ async function getOrCreateFormatter(type: LanguageType) {
     throw error;
   }
 }
-caches.open(CACHE_NAME).then(res => {
-  console.log('res:', res);
-});
 
 async function getCachedPlugin(url: string): Promise<Response> {
   try {
-    // Try to get from Cache API
     const cache = await caches.open(CACHE_NAME);
     const cachedResponse = await cache.match(url);
 
     if (cachedResponse) {
-      // Get the cached plugin as ArrayBuffer
       return cachedResponse;
     }
 
-    // If not in cache, fetch and cache it
     console.log('Fetching plugin from network');
     const response = await fetch(url);
     const clonedResponse = response.clone();
 
-    // Store in cache
     await cache.put(url, clonedResponse);
 
-    // Return the original response
     return response;
   } catch (error) {
     console.error('Cache operation failed:', error);
-    // Fallback to direct network request if caching fails
     return fetch(url);
   }
 }
-
-// outputs: "const t = 5\n"
 
 self.addEventListener('message', async (event: MessageEvent<FormatRequest>) => {
   try {
@@ -99,7 +88,6 @@ self.addEventListener('message', async (event: MessageEvent<FormatRequest>) => {
   }
 });
 
-// Handle cache cleanup on worker termination
 self.addEventListener('unload', async () => {
   try {
     const cache = await caches.open(CACHE_NAME);
