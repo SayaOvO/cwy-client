@@ -1,6 +1,6 @@
 export enum LanguageType {
-  JavaScript = 'javascript',
-  TypeScript = 'typescript',
+  JavaScript = 'js',
+  TypeScript = 'ts',
   JSX = 'jsx',
   TSX = 'tsx',
   CSS = 'css',

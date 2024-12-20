@@ -48,7 +48,9 @@ export const FileExploreItem = memo((
             ? <FolderOpen width={18} height={18} />
             : <FolderClosed width={18} height={18} />
           : <FileIcon width={18} height={18} />}
-        {node.name}
+        <span>
+          {node.name}
+        </span>
       </div>
       {node.fileType === 'directory' && expandedDirs.has(node.id)
         && node.children.map(child => (

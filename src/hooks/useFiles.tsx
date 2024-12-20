@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import useSWR from 'swr';
-import { useSetActiveTab } from '../contexts/tab-context';
+import { useSetActiveTab, useSetTabs } from '../contexts/tab-context';
 import { type File } from '../types/file';
 
 const fetcher = async (url: string) => {
@@ -15,6 +15,7 @@ export const useFiles = (projectId: string) => {
     fetcher,
   );
   const setActiveTab = useSetActiveTab();
+  const setTabs = useSetTabs();
 
   const createFile = useCallback(async (file: {
     name: string;
@@ -33,8 +34,13 @@ export const useFiles = (projectId: string) => {
           file,
         ),
       });
-      const createdFile = await response.json();
-      setActiveTab(createdFile.id);
+      const createdFile: File = await response.json();
+      if (createdFile.fileType === 'regular') {
+        setActiveTab(createdFile.id);
+        setTabs((
+          curr,
+        ) => [{ id: createdFile.id, fileName: createdFile.name }, ...curr]);
+      }
       mutate((currentData) => {
         return currentData ? [...currentData, createdFile] : [createdFile];
       }, { revalidate: false });

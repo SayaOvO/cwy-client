@@ -60,7 +60,7 @@ ul {
 /* sidebar */
 .sidebar {
   border: 1px solid var(--clr-border);
-  min-height: 100vh;
+  height: 100vh;
   position: relative;
   background-color: var(--clr-secondary);
   /* color: var(--clr-text-muted); */
@@ -69,6 +69,7 @@ ul {
 .file-explore {
   height: 100%;
   padding: 6px;
+  overflow-y: scroll;
 }
 
 .resize-handle {
@@ -130,12 +131,16 @@ ul {
   gap: 6px;
   cursor: pointer;
   padding: 4px 6px;
+  overflow: hidden;
   &:hover {
     background-color: rgba(129, 139, 152, 0.15);
   }
   &.active {
     font-weight: 500;
     background-color: rgba(129, 139, 152, 0.25); /* 颜色要比上面的更深点 */
+  }
+  & > * {
+    flex-shrink: 0;
   }
 }
 

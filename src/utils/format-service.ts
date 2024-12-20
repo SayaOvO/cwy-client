@@ -1,7 +1,7 @@
 import { Extension } from '@codemirror/state';
 import { keymap } from '@codemirror/view';
 import { EditorView } from '@codemirror/view';
-import { LanguageType } from './extensions-manager';
+import { LanguageType } from '../types/langauge-types';
 
 function similarity(a: string, b: string): number {
   let score = 0;
@@ -54,7 +54,7 @@ export class FormatService {
 
   constructor() {
     this.worker = new Worker(
-      new URL('./format.worker.ts', import.meta.url),
+      new URL('./format-worker.ts', import.meta.url),
       { type: 'module' },
     );
   }

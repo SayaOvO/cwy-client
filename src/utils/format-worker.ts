@@ -60,9 +60,7 @@ async function getCachedPlugin(url: string): Promise<Response> {
     }
 
     console.log('Fetching plugin from network');
-    const response = await fetch(url, {
-      mode: 'no-cors',
-    });
+    const response = await fetch(url);
     const clonedResponse = response.clone();
 
     await cache.put(url, clonedResponse);
