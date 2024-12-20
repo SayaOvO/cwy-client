@@ -10,9 +10,10 @@ export class EditorManager {
   private doc: Y.Doc;
   private wsProvider: WebsocketProvider;
   private persistence: IndexeddbPersistence;
-  public filesMap: Y.Map<Y.Text>;
+  private filesMap: Y.Map<Y.Text>;
   private activeEditorView: EditorView | null = null;
-  public editorViews: Map<string, EditorView> = new Map();
+  private editorViews: Map<string, EditorView> = new Map();
+  private isConnected: boolean = false;
 
   constructor(
     projectId: string,
@@ -29,6 +30,10 @@ export class EditorManager {
   private setupEventListeners() {
     this.wsProvider.on('status', (event: { status: string }) => {
       console.log('Sync Status:', event.status);
+      this.isConnected = event.status === 'connected';
+    });
+    this.wsProvider.on('disconnect', () => {
+      this.isConnected = false;
     });
     this.persistence.on('synced', () => {
       console.log('Indexed DB synced successfully');
@@ -42,6 +47,26 @@ export class EditorManager {
       } else {
         this.persistence.once('synced', () => resolve());
       }
+    });
+  }
+  private async waitForConnection(): Promise<void> {
+    if (this.isConnected) return;
+    return new Promise((resolve) => {
+      const checkConnection = () => {
+        if (this.isConnected) {
+          resolve();
+        } else {
+          this.wsProvider.once('status', ({ status }: { status: string }) => {
+            if (status === 'connected') {
+              this.isConnected = true;
+              resolve();
+            } else {
+              checkConnection();
+            }
+          });
+        }
+      };
+      checkConnection();
     });
   }
 
@@ -60,7 +85,10 @@ export class EditorManager {
     container: HTMLDivElement,
     additionalExtensions: Extension[] = [],
   ): Promise<EditorView> {
-    await this.waitForSync();
+    await Promise.all([
+      this.waitForSync(),
+      this.waitForConnection(),
+    ]);
     const yText = this.getOrCreateFileText(fileId);
     const extensions = await ExtensionsManager.getExtensions(
       fileName,

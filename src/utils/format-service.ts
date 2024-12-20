@@ -73,7 +73,7 @@ export class FormatService {
   createFormatExtension(type: LanguageType): Extension {
     return keymap.of([
       {
-        key: 'Ctrl-Shift-i',
+        key: 'Ctrl-Shift-f',
         run: (view: EditorView) => {
           try {
             const doc = view.state.doc;
