@@ -4,6 +4,8 @@
 
 [screenshot-2](./screenshots/swappy-20241220-222324.png)
 
+[screenshot-3](./screenshots/swappy-20241220-223836.png)
+
 
 快捷键：
 
