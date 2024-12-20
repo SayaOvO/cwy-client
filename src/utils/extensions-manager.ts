@@ -44,42 +44,61 @@ export class ExtensionsManager {
   ): Promise<Extension[]> {
     const formatService = new FormatService();
     switch (languageType) {
-      case LanguageType.JavaScript:
-      case LanguageType.TypeScript: {
-        const { javascript } = await import('@codemirror/lang-javascript');
-        const { lintGutter } = await import('@codemirror/lint');
-        const { createLinter } = await import('./create-linter');
-        const linter = languageType === LanguageType.JavaScript
-          ? [createLinter({}), lintGutter()]
-          : [];
+      case LanguageType.JavaScript: {
+        const [{ javascript }, { lintGutter }, { createLinter }] = await Promise
+          .all([
+            import('@codemirror/lang-javascript'),
+            import('@codemirror/lint'),
+            import('./create-linter'),
+          ]);
         return [
-          javascript({
-            typescript: languageType === LanguageType.TypeScript,
-          }),
+          javascript(),
           formatService.createFormatExtension(LanguageType.JavaScript),
-          ...linter,
+          lintGutter(),
+          createLinter({ jsx: false }),
         ];
       }
-      case LanguageType.JSX:
-      case LanguageType.TSX: {
+      case LanguageType.TypeScript: {
         const { javascript } = await import('@codemirror/lang-javascript');
-        const { createLinter } = await import('./create-linter');
-        const { lintGutter } = await import('@codemirror/lint');
-
-        const linter = languageType === LanguageType.JSX
-          ? [createLinter({ jsx: true }), lintGutter()]
-          : [];
 
         return [
           javascript({
-            typescript: languageType === LanguageType.TSX,
+            typescript: true,
+          }),
+          formatService.createFormatExtension(LanguageType.TypeScript),
+        ];
+      }
+      case LanguageType.JSX: {
+        const [{ javascript }, { lintGutter }, { createLinter }] = await Promise
+          .all([
+            import('@codemirror/lang-javascript'),
+            import('@codemirror/lint'),
+            import('./create-linter'),
+          ]);
+        return [
+          javascript({
             jsx: true,
           }),
           emmetConfig.of({
             syntax: EmmetKnownSyntax.jsx,
           }),
-          formatService.createFormatExtension(LanguageType.JavaScript),
-          ...linter,
+          createLinter({ jsx: true }),
+          lintGutter(),
+          formatService.createFormatExtension(LanguageType.JSX),
+        ];
+      }
+      case LanguageType.TSX: {
+        const { javascript } = await import('@codemirror/lang-javascript');
+
+        return [
+          javascript({
+            typescript: true,
+            jsx: true,
+          }),
+          emmetConfig.of({
+            syntax: EmmetKnownSyntax.jsx,
+          }),
+          formatService.createFormatExtension(LanguageType.TSX),
         ];
       }
 

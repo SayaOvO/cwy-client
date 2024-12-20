@@ -73,8 +73,9 @@ async function getCachedPlugin(url: string): Promise<Response> {
 }
 
 self.addEventListener('message', async (event: MessageEvent<FormatRequest>) => {
+  const { code, fileName } = event.data;
+
   try {
-    const { code, fileName } = event.data;
     const type = fileName.split('.').at(-1);
     const formatter = await getOrCreateFormatter(type as LanguageType);
     const formatted = formatter.formatText({
@@ -84,7 +85,7 @@ self.addEventListener('message', async (event: MessageEvent<FormatRequest>) => {
     self.postMessage(formatted);
   } catch (error) {
     console.log(error);
-    self.postMessage('Format failed');
+    self.postMessage(code);
   }
 });
 
