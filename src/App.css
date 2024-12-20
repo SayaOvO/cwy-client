@@ -69,7 +69,7 @@ ul {
 .file-explore {
   height: 100%;
   padding: 6px;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .resize-handle {
@@ -167,7 +167,6 @@ ul {
 /* tab */
 .tabs {
   display: flex;
-  /* TODO: 需要处理 overflow */
   flex-shrink: 0;
 
   & > li[aria-selected="true"] > .tab {
@@ -212,7 +211,7 @@ ul {
 
 .nav-tabs {
   display: flex;
-  overflow-x: scroll;
+  overflow-x: auto;
 }
 .tabs-remaining {
   flex: 1;
