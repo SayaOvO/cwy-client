@@ -8,9 +8,9 @@ interface FormatRequest {
 
 const CACHE_NAME = 'dprint-plugins';
 
-const TYPESCRIPT_PLUGIN = 'https://plugins.dprint.dev/typescript-0.93.3.wasm';
-const JSON_PLUGIN = 'https://plugins.dprint.dev/json-0.19.4.wasm';
-const MD_PLUGIN = 'https://plugins.dprint.dev/markdown-0.17.8.wasm';
+const TYPESCRIPT_PLUGIN = '/plugins/typescript-0.93.3.wasm';
+const JSON_PLUGIN = '/plugins/json-0.19.4.wasm';
+const MD_PLUGIN = '/plugins/markdown-0.17.8.wasm';
 
 const globalConfig: GlobalConfiguration = {
   indentWidth: 2,
