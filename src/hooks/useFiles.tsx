@@ -11,7 +11,7 @@ const fetcher = async (url: string) => {
 const API_URL = import.meta.env.PUBLIC_API_URL;
 export const useFiles = (projectId: string) => {
   const { data, error, isLoading, mutate } = useSWR<File[]>(
-    `${API_URL}/projects/${projectId}`,
+    `${API_URL}/api/projects/${projectId}`,
     fetcher,
   );
   const setActiveTab = useSetActiveTab();

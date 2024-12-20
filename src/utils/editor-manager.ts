@@ -14,7 +14,10 @@ export class EditorManager {
   private activeEditorView: EditorView | null = null;
   public editorViews: Map<string, EditorView> = new Map();
 
-  constructor(projectId: string, wsUrl: string = 'ws://localhost:3001') {
+  constructor(
+    projectId: string,
+    wsUrl: string = `ws://${import.meta.env.PUBLIC_API_URL}`,
+  ) {
     this.doc = new Y.Doc();
     this.filesMap = this.doc.getMap('files');
     this.wsProvider = new WebsocketProvider(wsUrl, projectId, this.doc);
