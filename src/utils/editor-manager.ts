@@ -16,7 +16,7 @@ export class EditorManager {
 
   constructor(
     projectId: string,
-    wsUrl: string = `ws://${import.meta.env.PUBLIC_API_URL}`,
+    wsUrl: string = `wss://${import.meta.env.PUBLIC_API_URL}`,
   ) {
     this.doc = new Y.Doc();
     this.filesMap = this.doc.getMap('files');
